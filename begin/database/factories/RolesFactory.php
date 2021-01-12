@@ -22,7 +22,7 @@ class RolesFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'role_id' => $this->faker->jobTitle,
         ];
     }
 }

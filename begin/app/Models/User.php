@@ -12,6 +12,23 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, Uuids;
 
+    // protected function getUserRoledId() {
+    //     $role = \App\Models\Role::where('role', 'User')->first();
+    //     return $role->id;
+    // }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($model) {
+    //         if (!$model->getKey()) {
+    //             $model->role_id = $model->getUserRoledId();
+    //         }
+    //     });
+    // }
+
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,4 +59,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function role() {
+        return $this->belongsTo('App\Models\Role');
+    }
 }

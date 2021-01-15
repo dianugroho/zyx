@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,8 +23,12 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+
         return [
-            'role_id' => $this->faker->uuid,
+            'role_id' => function () {
+                $roles = ['User', 'Admin'];
+                return DB::table('roles')->where('role', $roles[rand(0,1)])->value('id');
+            },
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),

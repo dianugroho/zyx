@@ -18,4 +18,6 @@ class Role extends Model
     protected $fillable = [
         'role',
     ];
+
+    protected $keyType = 'string';
 }

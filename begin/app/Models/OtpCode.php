@@ -28,4 +28,6 @@ class OtpCode extends Model
     protected $casts = [
         'valid_until' => 'datetime',
     ];
+
+    protected $keyType = 'string';
 }

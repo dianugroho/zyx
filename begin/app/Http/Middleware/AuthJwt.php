@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
-class Auth
+class AuthJwt
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,12 @@ class Auth
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentDate = Carbon::now()->day;
-        if($currentDate >= 1 && $currentDate <= 10) {
-            return $next($request);
+        if(Auth::user() === null) {
+            $response = ['response_code' => '01', 'response_message' => 'Unauthorized'];
+            return response()->json($response, 401);
         }
-        abort(403);
+
+        return $next($request);
+
     }
 }

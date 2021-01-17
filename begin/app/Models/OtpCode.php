@@ -18,6 +18,7 @@ class OtpCode extends Model
     protected $fillable = [
         'user_id',
         'otp_code',
+        'valid_until',
     ];
 
     /**
@@ -25,9 +26,6 @@ class OtpCode extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'valid_until' => 'datetime',
-    ];
 
     protected $keyType = 'string';
 }

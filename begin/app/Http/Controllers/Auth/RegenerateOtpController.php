@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegisteredEvent;
 use App\Models\User;
 use App\Models\OtpCode;
 use App\Http\Controllers\Controller;
@@ -29,6 +30,10 @@ class RegenerateOtpController extends Controller
             $otpCode->otp_code = rand(100000, 999999);
             $otpCode->valid_until = $currentDateTime->addMinute(5);
             $otpCode->save();
+
+            // Send $user or whatever you want to Mail
+            $sender = 'example@mail.com';
+            UserRegisteredEvent::dispatch($user, $otpCode, $sender);
 
             $response = ['response_code' => '00', 'response_message' => 'Silahkan cek email', 'data' => ['user' => $user]];
         }

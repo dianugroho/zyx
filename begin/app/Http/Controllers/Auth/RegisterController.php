@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Role;
-use App\Models\OtpCode;
-use Illuminate\Support\Facades\DB;
+use App\Events\UserRegisteredEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\OtpCode;
+use App\Models\Role;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -35,14 +36,18 @@ class RegisterController extends Controller
                 'role_id' => getUserRoleId('User'),
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make(Str::random(32))
+                'password' => Hash::make(Str::random(32)),
             ]);
 
-            OtpCode::create([
+            $otpCode = OtpCode::create([
                 'user_id' => $user->id,
                 'otp_code' => rand(100000, 999999),
-                'valid_until' => $currentDateTime->addMinute(5)
+                'valid_until' => $currentDateTime->addMinute(5),
             ]);
+
+            // Send $user or whatever you want to Mail
+            $sender = 'example@mail.com';
+            UserRegisteredEvent::dispatch($user, $otpCode, $sender);
 
             return $user;
         });

@@ -43,7 +43,7 @@
 
                     if (this.buttonLabel === "Add") {
                         this.$http.post('/api/users', user).then(response => {
-                            this.users.unshift(newUser);
+                            this.users.unshift(response.body.data);
                             this.user = "";
                         })
                     } else {
